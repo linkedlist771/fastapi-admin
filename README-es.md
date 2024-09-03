@@ -26,13 +26,13 @@
 
 Puedes checar una demo online [aquí](https://fastapi-admin.long2ice.io/admin/login).
 
-- usuario: `admin`
-- contraseña: `123456`
+- Usuario: `admin`
+- Contraseña: `123456`
 
 O una demo online versión pro [aquí](https://fastapi-admin-pro.long2ice.io/admin/login).
 
-- usuario: `admin`
-- contraseña: `123456`
+- Usuario: `admin`
+- Contraseña: `123456`
 
 ## Capturas
 
