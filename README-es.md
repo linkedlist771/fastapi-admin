@@ -45,7 +45,7 @@ O una demo online versión pro [aquí](https://fastapi-admin-pro.long2ice.io/adm
 1. Clona el repositorio.
 2. Crea un archivo `.env`.
    ```dotenv
-   DATABASE_URL=mysql://root:123456@127.0.0.1:3306/fastapi-admin
+   DATABASE_URL=mysql://root:123456@127.0.0.1:3306/fastapi_admin
    REDIS_URL=redis://localhost:6379/0
    ```
 3. Ejecuta el comando `docker-compose up -d --build`.
