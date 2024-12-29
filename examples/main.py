@@ -14,6 +14,7 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 from tortoise.contrib.fastapi import register_tortoise
+from tortoise import Tortoise
 
 from examples import settings
 from examples.constants import BASE_DIR
@@ -30,6 +31,22 @@ from fastapi_admin.exceptions import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Initialize Tortoise ORM first
+    await Tortoise.init(
+        config={
+            "connections": {"default": settings.DATABASE_URL},
+            "apps": {
+                "models": {
+                    "models": ["examples.models"],
+                    "default_connection": "default",
+                }
+            },
+        }
+    )
+    # Create schemas
+    await Tortoise.generate_schemas()
+    
+    # Then configure redis and admin app
     r = redis.from_url(
         settings.REDIS_URL,
         decode_responses=True,
@@ -47,7 +64,11 @@ async def lifespan(app: FastAPI):
         ],
         redis=r,
     )
+    
     yield
+    
+    # Cleanup
+    await Tortoise.close_connections()
 
 
 def create_app():
@@ -76,19 +97,7 @@ def create_app():
         allow_headers=["*"],
         expose_headers=["*"],
     )
-    register_tortoise(
-        app,
-        config={
-            "connections": {"default": settings.DATABASE_URL},
-            "apps": {
-                "models": {
-                    "models": ["examples.models"],
-                    "default_connection": "default",
-                }
-            },
-        },
-        generate_schemas=True,
-    )
+    
     return app
 
 
